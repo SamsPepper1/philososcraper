@@ -1,6 +1,8 @@
 var request = require('request');
 var cheerio = require('cheerio');
 
+var parsers = require('./helpers/parsers');
+
 function getPage(url, callback) {
 	request.get(url, function(err, resp, body){
 		if (err) {
@@ -42,18 +44,18 @@ function getPhilosopherInfo(name, callback) {
 			var title = $(item).text().trim();
 			switch (title) {
 				case "Born":
-					date = parseDate($(item).next().text());
+					date = parsers.parseDate($(item).next().text());
 					philosopherObj.born = date;
 					break;
 				case "Died":
-					date = parseDate($(item).next().text());
+					date = parsers.parseDate($(item).next().text());
 					philosopherObj.died = date;
 					break;
 				case 'Influences':
-					philosopherObj.Influences = parseInfluence($(item));
+					philosopherObj.Influences = parsers.parseInfluence($(item));
 					break;
 				case 'Influenced':
-					philosopherObj.Influenced = parseInfluence($(item));
+					philosopherObj.Influenced = parsers.parseInfluence($(item));
 					break;
 
 				default:
@@ -66,23 +68,6 @@ function getPhilosopherInfo(name, callback) {
 	});
 	return;	
 }
-
-function parseInfluence(item) {
-	links = item.next().find('li a');
-	if (links) {
-		return links.map(function(){
-			return this.attribs.title;
-		}).toArray();
-	}
-	return [];
-}
-
-
-function parseDate(string){
-	var dateRE =  /\d{1,2} \w+ \d{4}/;
-	return dateRE.exec(string)[0];
-}
-
 
 
 //var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
