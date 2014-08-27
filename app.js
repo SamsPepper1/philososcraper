@@ -2,15 +2,18 @@ var request = require('request');
 var cheerio = require('cheerio');
 
 function getPage(url, callback) {
-	request.get(url, callback)
+	request.get(url, function(err, resp, body){
+		if (err) {
+			console.log('had an error');
+			console.log(err);
+			return;
+		};
+		callback(body);
+	
+	});
 }
 
-function  parsePhilosopherLinks(err,resp,body) {
-	if (err) {
-		console.log('had an error');
-		console.log(err);
-		return;
-	};
+function  parsePhilosopherLinks(body) {
 	var $ = cheerio.load(body);
 	$($('h2:contains(Alphabetical)').next().find('li')).each(function(index, item) {
 		console.log($(item).text());
