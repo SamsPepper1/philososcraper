@@ -13,6 +13,9 @@ getPage(url, function(err,resp,body){
 		console.log(err);
 		return;
 	}
-	console.log(body); 
-	return;
+	var $ = cheerio.load(body);
+	var li = $('h2:contains(Alphabetical)').next().find('li')
+	$(li).each(function(index, item) {
+		console.log($(item).text());
+	});
 });
