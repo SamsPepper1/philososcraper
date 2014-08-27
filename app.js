@@ -49,6 +49,13 @@ function getPhilosopherInfo(name, callback) {
 					date = parseDate($(item).next().text());
 					philosopherObj.died = date;
 					break;
+				case 'Influences':
+					philosopherObj.Influences = parseInfluence($(item));
+					break;
+				case 'Influenced':
+					philosopherObj.Influenced = parseInfluence($(item));
+					break;
+
 				default:
 					//...
 			}
@@ -60,11 +67,28 @@ function getPhilosopherInfo(name, callback) {
 	return;	
 }
 
+function parseInfluence(item) {
+	links = item.next().find('li a');
+	if (links) {
+		return links.map(function(){
+			return this.attribs.title;
+		}).toArray();
+	}
+	return [];
+}
+
+
 function parseDate(string){
 	var dateRE =  /\d{1,2} \w+ \d{4}/;
 	return dateRE.exec(string)[0];
 }
 
+
+
 //var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
 //getPage(url, parsePhilosopherLinks);
-getPhilosopherInfo('Karl Marx', function(){});
+philosophers = ['Karl Marx','Thomas Hobbes','Alan Ryan', 'John Stuart Mill']
+
+philosophers.forEach(function(item){
+	getPhilosopherInfo(item, function(){});
+});
