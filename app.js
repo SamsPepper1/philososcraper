@@ -28,19 +28,41 @@ function getPhilosopherInfo(name, callback) {
 			console.log('error finding philosophers page');
 			return;
 		}
+
+		var philosopherObj = {
+			name:name
+		}
 		var queryString = ['Born','Died','Influences','Influenced'].map(function(item){
 			return 'th:contains(' + item + ')'
 		}).join();
+
 		$ = cheerio.load(body);
 		var infobox = $('table.infobox');
 		$(infobox).find(queryString).each(function(index, item){
-			console.log($(item).text());
-			console.log($(item).next().text().trim() + '\r\n');
+			var title = $(item).text().trim();
+			switch (title) {
+				case "Born":
+					date = parseDate($(item).next().text());
+					philosopherObj.born = date;
+					break;
+				case "Died":
+					date = parseDate($(item).next().text());
+					philosopherObj.died = date;
+					break;
+				default:
+					//...
+			}
 			return;
 		});
+		console.log(philosopherObj);
 		return;
 	});
 	return;	
+}
+
+function parseDate(string){
+	var dateRE =  /\d{1,2} \w+ \d{4}/;
+	return dateRE.exec(string)[0];
 }
 
 //var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
