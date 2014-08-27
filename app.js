@@ -72,8 +72,7 @@ function getPhilosopherInfo(name, callback) {
 
 //var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
 //getPage(url, parsePhilosopherLinks);
-philosophers = ['Karl Marx','Thomas Hobbes','Alan Ryan', 'John Stuart Mill']
-
+philosophers = "Plato,Aristotle,Epicurus,Thomas Aquinas,Thomas Hobbes,John Locke,David Hume,George Berkeley,Jeremy Bentham,Francis Place,James Mill,Harriet Taylor Mill,Adam Smith,David Ricardo,Alexis de Tocqueville,Wilhelm von Humboldt,Johann Wolfgang von Goethe,Alexander Bain,Isidore Auguste Marie François Xavier Comte,Claude Henri de Rouvroy, comte de Saint-Simon,Utopian socialism,Jean-François Marmontel,William Wordsworth,Samuel Taylor Coleridge".split(',');
 philosophers.forEach(function(item){
 	getPhilosopherInfo(item, function(){});
 });

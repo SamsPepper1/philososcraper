@@ -11,7 +11,8 @@ exports.parseInfluence = function (item) {
 
 exports.parseDate = function(string){
 	var dateRE =  /\d{1,2} \w+ \d{4}/;
-	return dateRE.exec(string)[0];
+	p = dateRE.exec(string);
+	return p? p[0]:null;
 }
 
 
