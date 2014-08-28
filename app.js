@@ -3,6 +3,7 @@ var cheerio = require('cheerio');
 
 var parsers = require('./helpers/parsers');
 var db = require('./database/mongodb').db;
+var Philosopher = require('./database/schemas/philosopher').Philosopher;
 
 function getPage(url, callback) {
 	request.get(url, function(err, resp, body){
@@ -52,19 +53,24 @@ function getPhilosopherInfo(name, callback) {
 					date = parsers.parseDate($(item).next().text());
 					philosopherObj.died = date;
 					break;
-				case 'Influences':
-					philosopherObj.Influences = parsers.parseInfluence($(item));
-					break;
-				case 'Influenced':
-					philosopherObj.Influenced = parsers.parseInfluence($(item));
-					break;
+//				case 'Influences':
+//					philosopherObj.Influences = parsers.parseInfluence($(item));
+//					break;
+//				case 'Influenced':
+//					philosopherObj.Influenced = parsers.parseInfluence($(item));
+//					break;
 
 				default:
 					//...
 			}
 			return;
 		});
-		console.log(philosopherObj);
+		var philosopher = new Philosopher(philosopherObj);
+		philosopher.save(function (err, philosopher) {
+			if (err) return console.error(err);
+			console.log('looks good..');
+			console.log('saved ' + philosopher.name);
+		});
 		return;
 	});
 	return;	
