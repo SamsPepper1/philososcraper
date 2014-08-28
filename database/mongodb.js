@@ -11,3 +11,7 @@ db.once('open', function callback () {
 
 
 exports.db = db;
+exports.disconnect = function(){
+	mongoose.disconnect();
+	return;
+}
