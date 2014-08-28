@@ -8,7 +8,6 @@ exports.parseInfluence = function (item) {
 	return [];
 }
 
-
 exports.parseDate = function(string){
 	var dateRE =  /\d{1,2} \w+ \d{4}/;
 	p = dateRE.exec(string);
@@ -16,4 +15,11 @@ exports.parseDate = function(string){
 }
 
 
+exports.parsePhilosopherLinks = function (body) {
+	var $ = cheerio.load(body);
+	$($('h2:contains(Alphabetical)').next().find('li')).each(function(index, item) {
+		console.log($(item).text());
+		return;
+	});
+};
 
