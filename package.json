@@ -1,0 +1,11 @@
+{
+	name: 'Philososcraper',
+	description: 'scrapes info on philosophers/social scientists frmo wikipedia',
+	version: "0.0.1",
+	dependencies: {
+		"async": "*",
+		"cheerio": "*",
+		"request": "*",
+		"mongoose": "*"
+	},
+}
