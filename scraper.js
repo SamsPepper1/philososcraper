@@ -10,21 +10,27 @@ var async = require('async');
 
 var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
 
-async.series([
-	function(callback) {
-		console.log('starting list scrape');
-		getPage(url, callback);
-	},
-	function(callback) {
-		console.log('getting philosopher info');
-		scrapeAll(callback);
-	},
-	function(callback) {
-		console.log('linking influences');
-		linkInfluences(callback);
-	},
-	function(callback) {
-		disconnect(callback);
-	}
-])
+function runScraper(req,res) {
+	res.send('running scraper...');
+	async.series([
+		function(callback) {
+			console.log('starting list scrape');
+			getPage(url, callback);
+		},
+		function(callback) {
+			console.log('getting philosopher info');
+			scrapeAll(callback);
+		},
+		function(callback) {
+			console.log('linking influences');
+			linkInfluences(callback);
+		},
+		function(callback) {
+			console.log('finished');
+		callback();
+		}
+	]);
+}
 
+
+exports.runScraper = runScraper;

@@ -1,30 +1,15 @@
-var parsePhilosopherLinks = require('./helpers/parsers').parsePhilosopherLinks;
-var getPage = require('./scraper/philosopherList').getPage
-var Philosopher = require('./database/schemas/philosopher').Philosopher;
-var scrapeAll = require('./scraper/philosopher').scrapeAll;
-var linkInfluences = require('./scraper/philosopherList').linkInfluences;
-var db = require('./database/mongodb').db;
-var disconnect = require('./database/mongodb').disconnect;
+var express = require('express');
+var runScraper = require('./scraper').runScraper;
 
-var async = require('async');
+var app = express();
 
-var url = 'https://en.wikipedia.org/wiki/List_of_social_and_political_philosophers'
+app.get('/testing', function(req,res){
+	res.send('1,2,3...');
+});
 
-async.series([
-	function(callback) {
-		console.log('starting list scrape');
-		getPage(url, callback);
-	},
-	function(callback) {
-		console.log('getting philosopher info');
-		scrapeAll(callback);
-	},
-	function(callback) {
-		console.log('linking influences');
-		linkInfluences(callback);
-	},
-	function(callback) {
-		disconnect(callback);
-	}
-])
 
+app.get('/run_scraper/', runScraper);
+
+var server = app.listen(3000, function() {
+	console.log('Listening on port %d', server.address().port);
+});
