@@ -2,34 +2,36 @@ var request = require('request');
 
 var Philosopher = require('../database/schemas/philosopher').Philosopher;
 var parseLinks = require('../helpers/parsers').parsePhilosopherLinks;
+var async = require('async');
 
 function getPage(url, callback) {
 	request.get(url, function(err, resp, body){
 		if (err) {
-			console.log('had an error');
-			console.log(err);
+			callback(err);
 			return;
 		};
 		var links = parseLinks(body);
-		links.each(function(index, name) {
+		async.each( links, function(name, cb) {
 			Philosopher.findOne({ name: name}, function(err, philosopher){
 				if (err) {
-					console.log('error: ' + err);
+					cb(err);
 					return;
 				}
 				if (philosopher){
-					console.log('already have ' + philosopher.name);
-					return;
+					cb();
+					return
 				}
 				var philosopher = new Philosopher({ name: name, isScraped: false})
 				philosopher.save(function(err, philosopher) {
 					if (err) {
-						console.log('error: ' + err);
+						cb(err);
 						return;
 					}
-					console.log('saved ' + philosopher.name);
+					cb();
 				});
 			});
+		}, function(err,result) {
+			callback(err)
 		});
 	
 	});

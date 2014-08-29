@@ -5,6 +5,7 @@ var philosopherSchema = mongoose.Schema({
 	born: String,
 	died: String,
 	isScraped: Boolean,
+	influences: [String]
 	
 })
 

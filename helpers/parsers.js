@@ -4,9 +4,10 @@ var cheerio = require('cheerio');
 exports.parseInfluence = function (item) {
 	links = item.next().find('li a');
 	if (links) {
-		return links.map(function(){
+		names =  links.map(function(){
 			return this.attribs.title;
 		}).toArray();
+		return names;
 	}
 	return [];
 }
