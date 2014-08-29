@@ -1,3 +1,6 @@
+var cheerio = require('cheerio');
+
+
 exports.parseInfluence = function (item) {
 	links = item.next().find('li a');
 	if (links) {
@@ -17,9 +20,15 @@ exports.parseDate = function(string){
 
 exports.parsePhilosopherLinks = function (body) {
 	var $ = cheerio.load(body);
-	$($('h2:contains(Alphabetical)').next().find('li')).each(function(index, item) {
-		console.log($(item).text());
-		return;
+	var names = [];
+	return $($('h2:contains(Alphabetical)').next().find('li')).map(function(){
+		return $(this).text();
 	});
+//.each(function(index, item) {
+
+//		names.push($(item).text());
+//		return;
+//	});
+//	return names;
 };
 
