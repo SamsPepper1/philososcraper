@@ -38,4 +38,38 @@ function getPage(url, callback) {
 }
 
 
+
+function linkInfluences(callback) {
+	Philosopher.find(function(err, philosophers) {
+		if (err) {
+			return callback(err);
+		}
+		async.each(philosophers, function(philosopher, cb){
+			linkInfluence(philosopher, cb);
+		}, function(err) {
+			if (err) {console.log('error: ' + err)};
+			callback(err);
+		});
+	});
+}
+
+function linkInfluence(philosopher, callback) {
+	async.map(philosopher.influences, function(influence, cb) {
+		Philosopher.findOneAndUpdate({name: influence},{},{upsert:true}, function(err, influencedPhilosopher) {
+			cb(err, influencedPhilosopher._id);
+		})
+	}, function(err, results) {
+		if (err) {
+			console.log("error: " + err);
+			return callback(err);
+		}
+		philosopher.influenceIds = results;
+		philosopher.save(function(err, philosopher) {
+			if (err) console.log('error: ' + err);
+			callback(err);
+		})
+	});
+};
+
 exports.getPage = getPage;
+exports.linkInfluences = linkInfluences;

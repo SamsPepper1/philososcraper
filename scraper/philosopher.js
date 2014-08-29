@@ -27,7 +27,7 @@ function getPhilosopherInfo(name, callback) {
 	var url = 'https://en.wikipedia.org/wiki/' + name.replace(' ','_');
 	request.get(url, function(err, resp, body) {
 		if (err){
-			return;
+			callback(err);
 		}
 
 		var philosopherObj = {
@@ -54,10 +54,6 @@ function getPhilosopherInfo(name, callback) {
 				case 'Influences':
 					philosopherObj.influences = parsers.parseInfluence($(item));
 					break;
-//				case 'Influenced':
-//					philosopherObj.Influenced = parsers.parseInfluence($(item));
-//					break;
-
 				default:
 					//...
 			}
@@ -73,8 +69,8 @@ function getPhilosopherInfo(name, callback) {
 				philosopher.influences = philosopherObj.influences;
 				philosopher.isScraped = true;
 				philosopher.save(function (err, philosopher) {
-					if (err) return console.error(err);
-						callback(err, philosopher);
+					if (err) console.error(err);
+					callback(err, philosopher);
 				});
 			}
 		});
