@@ -12,10 +12,18 @@ exports.parseInfluence = function (item) {
 	return [];
 }
 
-exports.parseDate = function(string){
-	var dateRE =  /\d{1,2} \w+ \d{4}/;
-	p = dateRE.exec(string);
-	return p? p[0]:null;
+exports.parseDate = function(dateString){
+	var dateRE =  /\d{3,4}/;
+	var BCRE = /BC/;
+	var parsedString = dateRE.exec(dateString);
+	if (parsedString && parsedString.length > 0) {
+		p = parseInt(parsedString[0]);
+		if (BCRE.exec(dateString)){
+			p *= -1;
+		}
+		return p? p:null;
+	}
+	return null;
 }
 
 
@@ -25,11 +33,4 @@ exports.parsePhilosopherLinks = function (body) {
 	return $($('h2:contains(Alphabetical)').next().find('li')).map(function(){
 		return $(this).text();
 	});
-//.each(function(index, item) {
-
-//		names.push($(item).text());
-//		return;
-//	});
-//	return names;
-};
-
+}

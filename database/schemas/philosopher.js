@@ -2,10 +2,11 @@ var mongoose = require('mongoose');
 
 var philosopherSchema = mongoose.Schema({
 	name: String,
-	born: String,
-	died: String,
+	born: Number,
+	died: Number,
 	isScraped: Boolean,
-	influences: [String]
+	influences: [String],
+	influenceIds: [{type: mongoose.Schema.ObjectId}]
 	
 })
 
