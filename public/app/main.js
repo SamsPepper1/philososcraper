@@ -1,22 +1,15 @@
 (function(){
 	var app = angular.module('philososcraper', []);
 
-	app.controller('philListController', function(){
+	app.controller('philListController', ['$http',function($http){
 		this.title = 'list of philosophers';
-		this.philosophers = philosophers;
-	});
-	var philosophers = [{
-			"born" : 1896,
-			"died" : 1948,
-			"name" : "Antonin Artaud"
-		},
-		{
-			"name" : "Albericus Gentilis"
-		},
-		{
-			"born" : 1821,
-			"died" : 1867,
-			"name" : "Charles Baudelaire"
-		}
-	];
+		var controller = this;
+		this.philosophers = [];
+		$http({ method: 'GET', url:'/ajax/philosophers'}).success(function(data) {
+			controller.philosophers = data;
+		});
+	}]);
+	var philosophers = [];
+
+
 })();

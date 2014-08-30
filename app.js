@@ -1,5 +1,6 @@
 var express = require('express');
 var path = require('path');
+var ajaxRoutes = require('./ajaxRoutes');
 
 var runScraper = require('./scraper').runScraper;
 
@@ -15,7 +16,10 @@ app.get('/testing', function(req,res){
 });
 app.get('/test_app', function(req, res){
 	res.sendFile(path.join(__dirname, '/public/index.html'));
-})
+});
+
+app.get('/ajax/philosophers', ajaxRoutes.getAllPhilosophers);
+
 
 
 app.get('/run_scraper/', runScraper);
