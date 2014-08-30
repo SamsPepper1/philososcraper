@@ -10,7 +10,7 @@
 		<div ng-controller="philListController as philList">
 			<h2>{{philList.title}}</h2>
 			<ul>
-				<li ng-repeat="philosopher in philList.philosophers">
+				<li class="philosopher" ng-repeat="philosopher in philList.philosophers">
 					<p>name: {{philosopher.name}}</p>
 					<p>born: {{philosopher.born}}</p>
 					<p>died: {{philosopher.died}}</p>
