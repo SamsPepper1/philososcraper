@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="philososcraper">
 	<head>
 		<title>TITLE</title>
 		<script type="text/javascript" src="scripts/angular.min.js"></script>
+		<script type="text/javascript" src="app/main.js"></script>
 	</head>
 	<body>
-		<h1 ng-init=" name='thing' "> Hello this is static html {{name}}</h1>
+		<h1 ng-init=" name='anguls' "> Just testin' me {{name}}</h1>
+		<div ng-controller="philListController as philList">
+			<h2>{{philList.title}}</h2>
+			<ul>
+				<li ng-repeat="philosopher in philList.philosophers">
+					<p>name: {{philosopher.name}}</p>
+					<p>born: {{philosopher.born}}</p>
+					<p>died: {{philosopher.died}}</p>
+				</li>
+			</ul>
+		</div>
 	</body>
 </html>
