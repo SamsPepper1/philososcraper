@@ -4,10 +4,10 @@
 	"version": "0.0.1",
 	"private": true,
 	"dependencies": {
-		"async": "*",
-		"cheerio": "*",
-		"request": "*",
-		"mongoose": "*",
-		"express": "*"
+		"async": ">=0.9.0",
+		"cheerio": ">=0.17.0",
+		"request": ">=2.4.0",
+		"mongoose": ">=3.8.15",
+		"express": ">=4.8.7"
 	}
 }
