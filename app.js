@@ -19,7 +19,7 @@ app.get('/test_app', function(req, res){
 });
 
 app.get('/ajax/philosophers', ajaxRoutes.getAllPhilosophers);
-
+app.get('/ajax/philosopher/:id', ajaxRoutes.getPhilosopherById);
 
 
 app.get('/run_scraper/', runScraper);
