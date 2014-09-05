@@ -1,0 +1,22 @@
+{
+  "name": "philososcraper",
+  "version": "0.0.0",
+  "authors": [
+    "Sam Sharp <sharpsam87@gmail.com>"
+  ],
+  "description": "pholososcraper is philososcraper",
+  "main": "app.js",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.4.11",
+    "angular": "~1.2.23"
+  }
+}
