@@ -10,13 +10,7 @@
 		<h1 ng-init=" name='anguls' "> Just testin' me {{name}}</h1>
 		<div ng-controller="philListController as philList">
 			<h2>{{philList.title}}</h2>
-			<ul>
-				<li class="philosopher" ng-repeat="philosopher in philList.philosophers">
-					<p>name: {{philosopher.name}}</p>
-					<p ng-show="philosopher.born">born: {{philosopher.born}}</p>
-					<p ng-show="philosopher.died">died: {{philosopher.died}}</p>
-				</li>
-			</ul>
+			<my-d3></my-d3>
 		</div>
 	</body>
 </html>
