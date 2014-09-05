@@ -2,7 +2,7 @@ var Philosopher = require('./database/schemas/philosopher').Philosopher;
 var BSON = require('mongodb').BSONPure;
 
 function getAllLinkedPhilosophers(req,res) {
-	Philosopher.find({'influences': {$nin: [[], null]}, 'born': {$nin: [null]}, 'died': {$nin:[null]}})// this gets all philosophers who we have scraped influencs for
+	Philosopher.find({'influences': {$nin: [[], null]}, 'born': {$nin: [null]}})// this gets all philosophers who we have scraped influencs for
 		.select('name born died')//only want these fields
 		.sort('born')	// sort by yaer of birth
 		.exec(function(err, philosophers) {

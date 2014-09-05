@@ -86,11 +86,13 @@
 					.style("fill", "red")
 					.style("opacity", 0.6)
 					.attr("width", 5)
-					.attr("height", function(d,i){ return d.died? yearFunction(d.died) - yearFunction(d.born): height})
+					.attr("height", function(d,i){ return d.died? yearFunction(d.died) - yearFunction(d.born): yearFunction(2014) - yearFunction(d.born)})
 					.attr("x", function(d,i){ return 5*i})
 					.attr("y", function(d,i){ return yearFunction(d.born) - offset})
 
 					node.on("mouseover", function(d) {
+						text = d.name + " lived from " + yearToString(d.born) + " to "
+						text += d.died? yearToString(d.died) + '.': 'the present day.'
 						d3.select(this)
 							.select('rect')
 							.style('opacity',1);
@@ -98,7 +100,7 @@
 						.style("fill", "black")
 						.attr("dx", function(){ return d3.event.pageX})
 						.attr("dy",function() { return yearFunction(d.born) - offset + 5})
-						.text(function(){ return d.name + " lived from " + yearToString(d.born) + " to " + yearToString(d.died) + "."});
+						.text(text);
 					});
 					
 					node.on("mouseout",function(d) {
