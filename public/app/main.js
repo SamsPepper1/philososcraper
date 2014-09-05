@@ -17,11 +17,16 @@
 				philosophers: '='
 				},
 			link: function(scope, element, attrs) {
+
+
+				var width = 3000;
+				var height = 3000;
+				var offset = -700;
 				// make svg and main graph layer
 				var graph = d3.select(element[0])
 					.append('svg')
-					.attr("width", 3000)
-					.attr("height", 3000)
+					.attr("width", width)
+					.attr("height", height)
 					.append('g');
 
 				//create label layer
@@ -34,7 +39,7 @@
 				};
 				// make x axis
 				var years = [];
-				for (var i = -500; i < 2020; i += 100){
+				for (var i = offset; i < 2020; i += 100){
 					years.push(i);
 				}
 				var point = graph.selectAll('.label')
@@ -42,20 +47,21 @@
 					.enter().append('g');
 				point.append('rect')
 					.attr("x", 0)
-					.attr("y", function(d) { return d +500})
+					.attr("y", function(d) { return d - offset })
 					.attr("height",5)
-					.attr("width", 3000)
+					.attr("width", width)
 					.style("fill", "blue")
 
 				point.select('rect').on("mouseover", function(d) {
 					labels.append("text")
 						.attr("dx", d3.event.pageX)
-						.attr("dy", d + 510)
+						.attr("dy", d - offset + 20)
 						.text(yearToString(d))
 					return;
 				})
 				point.select('rect').on("mouseout",removeLabels); 				
 
+				//this stuff needs to be done here to change with philosophers selected
 				scope.$watch('philosophers',function(newVal, oldVal) {
 					graph.selectAll(".philosopher").remove();
 					var node = graph.selectAll(".philosopher")
@@ -63,22 +69,32 @@
 					.enter().append('g')
 					
 					node.append("rect")
-					.style("stroke", "gray")
+					.style("stroke", "black")
 					.style("fill", "red")
+					.style("opacity", 0.6)
 					.attr("width", 5)
-					.attr("height", function(d,i){ return d.died? d.died - d.born: 3000})
+					.attr("height", function(d,i){ return d.died? d.died - d.born: height})
 					.attr("x", function(d,i){ return 5*i})
-					.attr("y", function(d,i){ return d.born + 500})
+					.attr("y", function(d,i){ return d.born - offset})
 
 					node.on("mouseover", function(d) {
+						d3.select(this)
+							.select('rect')
+							.style('opacity',1);
 						labels.append('svg:text')
 						.style("fill", "black")
-						.attr("dx", function(){ return d3.event.clientX})
-						.attr("dy",function() { return d.born + 515})
-						.text(function(){ return d.name + "lived from " + yearToString(d.born) + " to " + yearToString(d.died) + "."});
+						.attr("dx", function(){ return d3.event.pageX})
+						.attr("dy",function() { return d.born - offset + 5})
+						.text(function(){ return d.name + " lived from " + yearToString(d.born) + " to " + yearToString(d.died) + "."});
 					});
 					
-					node.on("mouseout",removeLabels);
+					node.on("mouseout",function(d) {
+					 	d3.select(this)
+							.select('rect')
+							.style('opacity', 0.6);
+						console.log(d);
+						removeLabels();
+					})
 					return;
 				});
 				return;
