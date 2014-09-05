@@ -9,7 +9,8 @@ var app = express();
 app.set('post', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view options', {layout: false});
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/scripts',express.static(path.join(__dirname, 'bower_components')));
+app.use('/appscripts', express.static(path.join(__dirname, 'public/app')));
 
 app.get('/testing', function(req,res){
 	res.send('1,2,3...');
