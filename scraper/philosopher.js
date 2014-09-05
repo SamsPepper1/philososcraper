@@ -68,6 +68,7 @@ function getPhilosopherInfo(name, callback) {
 				philosopher.died = philosopherObj.died;
 				philosopher.influences = philosopherObj.influences;
 				philosopher.isScraped = true;
+				philosopher.url = resp.url;
 				philosopher.save(function (err, philosopher) {
 					if (err) console.error(err);
 					callback(err, philosopher);
