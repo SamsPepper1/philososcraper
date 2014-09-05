@@ -6,6 +6,7 @@
 		var controller = this;
 		$scope.philosophers = [];
 		$scope.testName = 'Wiliam';
+		$scope.yearFunction = logarithmicYear;
 		$http({ method: 'GET', url:'/ajax/philosophers'}).success(function(data) {
 			$scope.philosophers = data;
 		});
@@ -14,7 +15,8 @@
 		return {
 			restrict: 'E',
 			scope: {
-				philosophers: '='
+				philosophers: '=',
+				yearFunction: "="
 				},
 			link: function(scope, element, attrs) {
 
@@ -22,6 +24,8 @@
 				var width = 3000;
 				var height = 3000;
 				var offset = -700;
+				var yearFunction = logarithmicYear;
+				console.log(scope);
 				// make svg and main graph layer
 				var graph = d3.select(element[0])
 					.append('svg')
@@ -45,21 +49,30 @@
 				var point = graph.selectAll('.label')
 					.data(years)
 					.enter().append('g');
+				// add two rectangles, one invisible for capturing clicks
+
 				point.append('rect')
 					.attr("x", 0)
-					.attr("y", function(d) { return d - offset })
-					.attr("height",5)
+					.attr("y", function(d) { return yearFunction(d) - offset })
+					.attr("height",2)
 					.attr("width", width)
 					.style("fill", "blue")
+				point.append('rect')
+					.attr('class', 'hoverable')
+					.attr("x", 0)
+					.attr("y", function(d) { return yearFunction(d) - offset - 5 })
+					.attr("height",12)
+					.attr("width", width)
+					.attr("opacity", 0.1);
 
-				point.select('rect').on("mouseover", function(d) {
+				point.select('rect.hoverable').on("mouseover", function(d) {
 					labels.append("text")
 						.attr("dx", d3.event.pageX)
-						.attr("dy", d - offset + 20)
+						.attr("dy", yearFunction(d) - offset + 20)
 						.text(yearToString(d))
 					return;
 				})
-				point.select('rect').on("mouseout",removeLabels); 				
+				point.select('rect.hoverable').on("mouseout",removeLabels); 				
 
 				//this stuff needs to be done here to change with philosophers selected
 				scope.$watch('philosophers',function(newVal, oldVal) {
@@ -73,9 +86,9 @@
 					.style("fill", "red")
 					.style("opacity", 0.6)
 					.attr("width", 5)
-					.attr("height", function(d,i){ return d.died? d.died - d.born: height})
+					.attr("height", function(d,i){ return d.died? yearFunction(d.died) - yearFunction(d.born): height})
 					.attr("x", function(d,i){ return 5*i})
-					.attr("y", function(d,i){ return d.born - offset})
+					.attr("y", function(d,i){ return yearFunction(d.born) - offset})
 
 					node.on("mouseover", function(d) {
 						d3.select(this)
@@ -84,7 +97,7 @@
 						labels.append('svg:text')
 						.style("fill", "black")
 						.attr("dx", function(){ return d3.event.pageX})
-						.attr("dy",function() { return d.born - offset + 5})
+						.attr("dy",function() { return yearFunction(d.born) - offset + 5})
 						.text(function(){ return d.name + " lived from " + yearToString(d.born) + " to " + yearToString(d.died) + "."});
 					});
 					
@@ -92,7 +105,6 @@
 					 	d3.select(this)
 							.select('rect')
 							.style('opacity', 0.6);
-						console.log(d);
 						removeLabels();
 					})
 					return;
@@ -101,6 +113,20 @@
 			},
 		}
 	});
+
+
+	function logarithmicYear(year){
+		return  2000-( Math.log(2050-year) * 300);
+	}
+
+	function linearYear(year) {
+		return year;	
+	}
+	var yearFunctions = {
+		'logarithmic': logarithmicYear,
+		'linear': linearYear
+
+	}	
 
 	function yearToString(year) {
 		var s = Math.abs(year).toString();
